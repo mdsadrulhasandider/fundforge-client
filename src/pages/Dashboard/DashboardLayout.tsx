@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import {
@@ -25,6 +25,18 @@ const DashboardLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    if (user && (location.pathname === '/dashboard' || location.pathname === '/dashboard/')) {
+      if (user.role === 'Supporter') {
+        navigate('/dashboard/supporter-home', { replace: true });
+      } else if (user.role === 'Creator') {
+        navigate('/dashboard/creator-home', { replace: true });
+      } else if (user.role === 'Admin') {
+        navigate('/dashboard/admin-home', { replace: true });
+      }
+    }
+  }, [location.pathname, user, navigate]);
 
   if (!user) return null;
 
