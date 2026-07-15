@@ -11,6 +11,15 @@ export const api = axios.create({
   }
 });
 
+// Attach token from localStorage to every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export interface UserType {
   id: string;
   name: string;
@@ -61,6 +70,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       const response = await api.post('/auth/login', credentials);
+      if (response.data.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+      }
       setUser(response.data.user);
       toast.success(response.data.message || 'Logged in successfully!');
     } catch (error: any) {
@@ -75,6 +87,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       const response = await api.post('/auth/register', userData);
+      if (response.data.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+      }
       setUser(response.data.user);
       toast.success(response.data.message || 'Registered successfully!');
     } catch (error: any) {
@@ -89,6 +104,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       const response = await api.post('/auth/google-login', userData);
+      if (response.data.accessToken) {
+        localStorage.setItem('accessToken', response.data.accessToken);
+      }
       setUser(response.data.user);
       toast.success(response.data.message || 'Google Login successful!');
     } catch (error: any) {
@@ -102,6 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await api.post('/auth/logout');
+      localStorage.removeItem('accessToken');
       setUser(null);
       toast.success('Logged out successfully');
     } catch (error) {
