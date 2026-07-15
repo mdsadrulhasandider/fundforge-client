@@ -14,7 +14,7 @@ const loginSchema = z.object({
 type LoginFields = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
-  const { login, googleLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
@@ -37,20 +37,9 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      // Mock Google OAuth login flow payload
-      const mockGoogleProfile = {
-        name: 'Google Supporter',
-        email: 'supporter@google.com',
-        photo: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120',
-        role: 'Supporter' // Defaults to supporter, can be Creator if registered
-      };
-      await googleLogin(mockGoogleProfile);
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error(err);
-    }
+  const handleGoogleSignIn = () => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    window.location.href = `${apiUrl}/auth/google`;
   };
 
   return (
