@@ -21,7 +21,7 @@ const AdminReports: React.FC = () => {
   const fetchReports = async () => {
     try {
       const response = await api.get('/reports');
-      setReports(response.data || []);
+      setReports(response.data?.reports || []);
     } catch (err) {
       console.error(err);
     } finally {
