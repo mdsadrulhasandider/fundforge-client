@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { api } from '../contexts/AuthContext';
+import { api, useAuth } from '../contexts/AuthContext';
 import Card, { CampaignType } from '../components/Card';
 import { ChevronLeft, ChevronRight, Cpu, Heart, Palette, Landmark, Sparkles, Rocket, ArrowRight } from 'lucide-react';
 
@@ -57,6 +57,7 @@ const CATEGORIES = [
 ];
 
 const Home: React.FC = () => {
+  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [topCampaigns, setTopCampaigns] = useState<CampaignType[]>([]);
   const [testiIndex, setTestiIndex] = useState(0);
@@ -341,7 +342,7 @@ const Home: React.FC = () => {
           </p>
           <div className="pt-2">
             <RouterLink
-              to="/register"
+              to={user ? '/dashboard' : '/register'}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition shadow-md hover:shadow-blue-500/20 cursor-pointer"
             >
               <Rocket className="w-4 h-4" />
