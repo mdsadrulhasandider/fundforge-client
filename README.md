@@ -20,7 +20,8 @@ This is the **Frontend Client** repository of the platform.
 To test the platform features across all roles, use the following administrator account:
 
 - **Admin Username / Email**: `admin@fundforge.com`
-- **Admin Password**: `Admin@123456`
+- **Admin Password (Live Site)**: `adminpassword123`
+- **Admin Password (Local Dev)**: `Admin@123456`
 
 ---
 
